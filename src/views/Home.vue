@@ -15,7 +15,7 @@ export default {
   },
   data: () => ({
     members: [
-      {name: '탁남수', position: '치장', src: 'https://cdn.vuetifyjs.com/images/cards/cooking.png'},
+      {name: '탁남수', position: '차장', src: 'https://cdn.vuetifyjs.com/images/cards/cooking.png'},
       {name: '천금재', position: '과장', src: 'https://cdn.vuetifyjs.com/images/cards/cooking.png'},
       {name: '장지훈', position: '대리', src: 'https://cdn.vuetifyjs.com/images/cards/cooking.png'},
       {name: '서효승', position: '사원', src: 'https://cdn.vuetifyjs.com/images/cards/cooking.png'}
