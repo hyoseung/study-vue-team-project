@@ -1,5 +1,8 @@
 # team_project
 
+## setting project
+vue add vuetify
+
 ## Project setup
 ```
 yarn install
