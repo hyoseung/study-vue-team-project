@@ -12,12 +12,15 @@
       temporary
     >
       <v-list>
-        <v-list-item :to="{path: '/'}">
+        <v-list-item v-for="menu in menuList" :key="menu.title" :to="menu.to">
+          <v-list-item-title>{{ menu.title }}</v-list-item-title>
+        </v-list-item>
+        <!-- <v-list-item :to="{path: '/'}">
           <v-list-item-title>HOME</v-list-item-title>
         </v-list-item>
         <v-list-item :to="{path: '/about'}">
           <v-list-item-title>ABOUT</v-list-item-title>
-        </v-list-item>
+        </v-list-item> -->
       </v-list>
     </v-navigation-drawer>
 
@@ -33,7 +36,11 @@
 export default {
   name: 'App',
   data: () => ({
-    drawer: null
+    drawer: null,
+    menuList: [
+      { title: 'HOME', to: {path: '/'}},
+      { title: 'ABOUT', to: {path: '/about'}},
+    ]
   }),
 };
 </script>
