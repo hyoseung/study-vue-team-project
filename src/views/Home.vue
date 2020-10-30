@@ -1,17 +1,25 @@
 <template>
   <div class="home">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1>Team Members</h1>
+    <MemberCard :cards="members"></MemberCard>      
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import MemberCard from '@/components/home/MemberCard.vue';
 
 export default {
   name: 'Home',
   components: {
-    HelloWorld
-  }
+    MemberCard
+  },
+  data: () => ({
+    members: [
+      {name: '탁남수', position: '치장', src: 'https://cdn.vuetifyjs.com/images/cards/cooking.png'},
+      {name: '천금재', position: '과장', src: 'https://cdn.vuetifyjs.com/images/cards/cooking.png'},
+      {name: '장지훈', position: '대리', src: 'https://cdn.vuetifyjs.com/images/cards/cooking.png'},
+      {name: '서효승', position: '사원', src: 'https://cdn.vuetifyjs.com/images/cards/cooking.png'}
+    ]
+  })
 }
 </script>
