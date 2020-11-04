@@ -5,10 +5,10 @@
         <h2>{{ title }}</h2>
       </div>
       <div class="list-body">
-        <draggable :group="{name: 'todo'}">
-          <div class="list-card" v-for="element in todoCards" :key="element.id">
-            <TodoCard :todoCard="element" @remove="removeCard"></TodoCard> <!-- emit 사용 -->
-          </div>
+        <draggable :group="{name: 'todo'}" @start="onStart" @end="onEnd" :move="onMove">
+          <transition-group name="list-cards" tag="div">
+            <TodoCard v-for="element in todoCards" :key="element.id" :todoCard="element" @remove="removeCard"></TodoCard> <!-- emit 사용 -->
+          </transition-group>
         </draggable>
       </div>
       <div class="list-footer">
@@ -41,6 +41,38 @@ export default {
     removeCard(item) {
       let index = this.todoCards.indexOf(item);
       this.todoCards.splice(index, 1);
+    },
+    onStart(evt) {
+      console.log("onStart");
+      console.log(evt.oldIndex);
+    },
+    onEnd(evt) {
+      let obj = {
+        item: evt.item,
+        to: evt.to,
+        from: evt.from,
+        oldIndex: evt.oldIndex,
+        newIndex: evt.newIndex,
+        oldDraggableIndex: evt.oldDraggableIndex, // element's old index within old parent, only counting draggable elements
+        newDraggableIndex: evt.newDraggableIndex ,// element's new index within new parent, only counting draggable elements
+        clone: evt.clone, // the clone element
+        pullMode: evt.pullMode
+      }
+      console.log("onEnd");
+      console.log(obj);
+    },
+    onMove(evt, originalEvt) {
+      let obj = {
+        dragged: evt.dragged, // dragged HTMLElement
+        draggedRect: evt.draggedRect, // DOMRect {left, top, right, bottom}
+        related: evt.related, // HTMLElement on which have guided
+        relatedRect: evt.relatedRect, // DOMRect
+        willInsertAfter: evt.willInsertAfter, // Boolean that is true if Sortable will insert drag element after target by default
+        clientY: originalEvt.clientY // mouse position
+      }
+      console.log("onMove");
+      console.log(obj);
+      
     }
   }
 }
@@ -82,19 +114,11 @@ export default {
   padding: 0 4px;
   z-index: 1;
   min-height: 0;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
-.list-card {
-  background-color: #fff;
-  border-radius: 3px;
-  box-shadow: 0 1px 0 rgba(9,30,66,.25);
-  cursor: pointer;
-  display: block;
-  margin-bottom: 8px;
-  max-width: 300px;
-  min-height: 20px;
-  position: relative;
-  text-decoration: none;
-  z-index: 0;
+.list-body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
 }
 
 .list-footer {
@@ -112,5 +136,13 @@ export default {
   padding: 4px 8px;
   position: relative;
   cursor: pointer;
+}
+
+.list-cards-enter-active, .list-cards-leave-active {
+  transition: all 1s;
+}
+.list-cards-enter, .list-cards-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
 }
 </style>

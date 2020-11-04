@@ -17,14 +17,14 @@ export default {
   data() {
     return {
       todoList: [
-        { id: uniqid(), text: 'search npm', createdBy: 'hyoseung'},
-        { id: uniqid(), text: 'searchnpm111qqqqqqqqqqqqqqqqqqqqqqqq22', createdBy: 'hyoseung'}
+        { id: uniqid(), state: 'TODO', text: 'search npm', createdBy: 'hyoseung', createdDate: new Date() },
+        { id: uniqid(), state: 'TODO', text: 'searchnpm111qqqqqqqqqqqqqqqqqqqqqqqq22', createdBy: 'hyoseung', createdDate: new Date() }
       ],
       doingList: [
-        { id: uniqid(), text: 'example coding', createdBy: 'hyoseung1'}
+        { id: uniqid(), state: 'DOING', text: 'example coding', createdBy: 'hyoseung1', createdDate: new Date() }
       ],
       doneList: [
-        { id: uniqid(), text: 'create git repository', createdBy: 'hyoseung2'}
+        { id: uniqid(), state: 'DONE', text: 'create git repository', createdBy: 'hyoseung2', createdDate: new Date() }
       ]
     }
   }
