@@ -1,6 +1,6 @@
 <template>
   <div class="list-card">
-    <div class="list-card-details" @click="detailCard">{{todoCard.text}}</div>
+    <div class="list-card-title" @click="showDetailCard">{{todoCard.title}}</div>
     <span class="remove-card-btn" @click="removeCard"><i class="fas fa-trash-alt"></i></span>
   </div>
 </template>
@@ -12,8 +12,8 @@ export default {
     removeCard() {
       this.$emit('remove', this.todoCard);
     },
-    detailCard() {
-      alert(JSON.stringify(this.todoCard));
+    showDetailCard() {
+      this.$emit('show', this.todoCard);
     }
   }
 }
@@ -32,16 +32,19 @@ export default {
   position: relative;
   text-decoration: none;
   z-index: 0;
+  cursor: pointer;
 }
+
 .remove-card-btn {
   opacity: .5;
   padding: 4px;
   position: absolute;
   right: 2px;
   top: 2px;
-  z-index: 40px;
+  z-index: 20px;
+  cursor: pointer;
 }
-.list-card-details {
+.list-card-title {
   overflow: hidden;
   padding: 6px 8px 2px;
   position: relative;
