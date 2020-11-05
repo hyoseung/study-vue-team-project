@@ -32,6 +32,7 @@ export default {
   position: relative;
   text-decoration: none;
   z-index: 0;
+  cursor: move;
 }
 .remove-card-btn {
   opacity: .5;
@@ -40,6 +41,7 @@ export default {
   right: 2px;
   top: 2px;
   z-index: 40px;
+  cursor: pointer;
 }
 .list-card-details {
   overflow: hidden;

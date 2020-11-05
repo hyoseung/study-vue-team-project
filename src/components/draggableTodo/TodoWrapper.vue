@@ -5,9 +5,9 @@
         <h2>{{ title }}</h2>
       </div>
       <div class="list-body">
-        <draggable :group="{name: 'todo'}" @start="onStart" @end="onEnd" :move="onMove">
-          <transition-group name="list-cards" tag="div">
-            <TodoCard v-for="element in todoCards" :key="element.id" :todoCard="element" @remove="removeCard"></TodoCard> <!-- emit 사용 -->
+        <draggable :group="{name: 'todo'}" v-model="lists" @add="onAdd"> <!-- @start="onStart" @unchoose="onUnchoose" -->
+          <transition-group name="list-cards" tag="div" :id="state">
+            <TodoCard v-for="element in lists" :key="element.id" :todoCard="element" @remove="removeCard"></TodoCard> <!-- emit 사용 -->
           </transition-group>
         </draggable>
       </div>
@@ -26,54 +26,69 @@ import TodoCard from '@/components/draggableTodo/TodoCard.vue';
 import uniqid from 'uniqid';
 
 export default {
-  props: ['title', 'todoCards'],
+  props: ['title', 'todoData', 'state'],
   components: {
     draggable, TodoCard
   },
+  computed: {
+    lists: {
+      get() {
+        return this.todoData;
+      },
+      set(value) {
+        this.$emit('update', this.state, value);
+      }
+    }
+  },
   methods: {
     addCard() {
-      this.todoCards.push({
+      console.log('addCard : '+this.state);
+      this.todoData.push({
         id: uniqid(),
+        state: this.state,
         text: 'add card',
-        createdBy: 'hyoseung'
+        createdBy: 'hyoseung',
+        createdDate: new Date()
       });
     },
     removeCard(item) {
-      let index = this.todoCards.indexOf(item);
-      this.todoCards.splice(index, 1);
+      console.log('removeCard : '+this.state);
+      let index = this.todoData.indexOf(item);
+      this.todoData.splice(index, 1);
     },
-    onStart(evt) {
-      console.log("onStart");
-      console.log(evt.oldIndex);
-    },
-    onEnd(evt) {
-      let obj = {
-        item: evt.item,
-        to: evt.to,
-        from: evt.from,
-        oldIndex: evt.oldIndex,
-        newIndex: evt.newIndex,
-        oldDraggableIndex: evt.oldDraggableIndex, // element's old index within old parent, only counting draggable elements
-        newDraggableIndex: evt.newDraggableIndex ,// element's new index within new parent, only counting draggable elements
-        clone: evt.clone, // the clone element
-        pullMode: evt.pullMode
-      }
-      console.log("onEnd");
-      console.log(obj);
-    },
-    onMove(evt, originalEvt) {
-      let obj = {
-        dragged: evt.dragged, // dragged HTMLElement
-        draggedRect: evt.draggedRect, // DOMRect {left, top, right, bottom}
-        related: evt.related, // HTMLElement on which have guided
-        relatedRect: evt.relatedRect, // DOMRect
-        willInsertAfter: evt.willInsertAfter, // Boolean that is true if Sortable will insert drag element after target by default
-        clientY: originalEvt.clientY // mouse position
-      }
-      console.log("onMove");
-      console.log(obj);
-      
+    onAdd(evt) {
+      console.log('onAdd : ' + this.state);
+      console.log(evt); //newIndex
+      this.todoData[evt.newIndex].state = evt.to.id;
+      console.log(this.todoData);
     }
+    // onStart(evt) {
+    //   console.log("onStart");
+    //   console.log(evt.oldIndex);
+    // },
+    // onEnd(evt) {
+    //   let obj = {
+    //     item: evt.item,
+    //     to: evt.to,
+    //     from: evt.from,
+    //     oldIndex: evt.oldIndex,
+    //     newIndex: evt.newIndex,
+    //     oldDraggableIndex: evt.oldDraggableIndex, // element's old index within old parent, only counting draggable elements
+    //     newDraggableIndex: evt.newDraggableIndex ,// element's new index within new parent, only counting draggable elements
+    //     clone: evt.clone, // the clone element
+    //     pullMode: evt.pullMode
+    //   }
+    //   console.log("onEnd " + this.state);
+    //   console.log(obj);
+    // },
+    // onUnchoose(evt) {
+    //   console.log("onUnchoose " + this.state);
+    //   console.log(evt);
+    //   // let item = this.todoData[evt.oldIndex];
+    //   // item.state = evt.to.id;
+    //   // console.log(item);
+    //   // console.log(evt);
+    // }
   }
 }
 </script>
