@@ -2,13 +2,13 @@
   <div class="list-wrapper">
     <div class="list">
       <div class="list-header">
-        <h2>{{ title }}</h2>
+        <h2>{{ listTitle }}</h2>
       </div>
       <div class="list-body">
-        <draggable :group="{name: 'todo'}" v-model="lists" @add="onAdd"> <!-- @start="onStart" @unchoose="onUnchoose" -->
-          <transition-group name="list-cards" tag="div" :id="state">
-            <TodoCard v-for="element in lists" :key="element.id" :todoCard="element" @remove="removeCard"></TodoCard> <!-- emit 사용 -->
-          </transition-group>
+        <draggable :group="{name: 'todo'}" v-model="list">
+          <!-- <transition-group name="list-cards" tag="div"> -->
+            <TodoCard v-for="element in list" :key="element.id" :todoCard="element" @remove="removeCard" @show="showDetailCard"></TodoCard> <!-- emit 사용 -->
+          <!-- </transition-group> -->
         </draggable>
       </div>
       <div class="list-footer">
@@ -17,6 +17,15 @@
         </span>
       </div>
     </div>
+
+    <Modal v-if="showModal" @close="showModal = false" :data="modalData">
+      <h3 slot="header">{{modalData.title}}</h3>
+      <div slot="body">
+        <div>{{modalData.createdBy}}</div>
+        <div>{{modalData.createdDate}}</div>
+        <div>{{modalData.description}}</div>
+      </div> 
+  </Modal>
   </div>
 </template>
 
@@ -24,71 +33,49 @@
 import draggable from 'vuedraggable';
 import TodoCard from '@/components/draggableTodo/TodoCard.vue';
 import uniqid from 'uniqid';
+import Modal from '@/components/draggableTodo/Modal.vue';
 
 export default {
-  props: ['title', 'todoData', 'state'],
+  props: ['listId', 'listTitle', 'todoData'],
   components: {
-    draggable, TodoCard
+    draggable, TodoCard, Modal
+  },
+  data() {
+    return {
+      showModal: false,
+      modalData: {}
+    }
   },
   computed: {
-    lists: {
+    list: {
       get() {
         return this.todoData;
       },
       set(value) {
-        this.$emit('update', this.state, value);
+        this.$emit('update', this.listId, value);
       }
     }
   },
   methods: {
     addCard() {
-      console.log('addCard : '+this.state);
+      console.log('addCard : '+this.listId);
       this.todoData.push({
         id: uniqid(),
-        state: this.state,
-        text: 'add card',
+        title: 'add card',
+        description: 'testestest',
         createdBy: 'hyoseung',
         createdDate: new Date()
       });
     },
     removeCard(item) {
-      console.log('removeCard : '+this.state);
+      console.log('removeCard : '+this.listId);
       let index = this.todoData.indexOf(item);
       this.todoData.splice(index, 1);
     },
-    onAdd(evt) {
-      console.log('onAdd : ' + this.state);
-      console.log(evt); //newIndex
-      this.todoData[evt.newIndex].state = evt.to.id;
-      console.log(this.todoData);
+    showDetailCard(data) {
+      this.modalData = data;
+      this.showModal = true;
     }
-    // onStart(evt) {
-    //   console.log("onStart");
-    //   console.log(evt.oldIndex);
-    // },
-    // onEnd(evt) {
-    //   let obj = {
-    //     item: evt.item,
-    //     to: evt.to,
-    //     from: evt.from,
-    //     oldIndex: evt.oldIndex,
-    //     newIndex: evt.newIndex,
-    //     oldDraggableIndex: evt.oldDraggableIndex, // element's old index within old parent, only counting draggable elements
-    //     newDraggableIndex: evt.newDraggableIndex ,// element's new index within new parent, only counting draggable elements
-    //     clone: evt.clone, // the clone element
-    //     pullMode: evt.pullMode
-    //   }
-    //   console.log("onEnd " + this.state);
-    //   console.log(obj);
-    // },
-    // onUnchoose(evt) {
-    //   console.log("onUnchoose " + this.state);
-    //   console.log(evt);
-    //   // let item = this.todoData[evt.oldIndex];
-    //   // item.state = evt.to.id;
-    //   // console.log(item);
-    //   // console.log(evt);
-    // }
   }
 }
 </script>
@@ -152,12 +139,12 @@ export default {
   position: relative;
   cursor: pointer;
 }
-
-.list-cards-enter-active, .list-cards-leave-active {
+/* .list-cards-enter-active, .list-cards-leave-active {
   transition: all 1s;
 }
 .list-cards-enter, .list-cards-leave-to {
   opacity: 0;
   transform: translateY(30px);
 }
+*/
 </style>

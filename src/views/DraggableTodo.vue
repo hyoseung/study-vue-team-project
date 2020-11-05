@@ -1,8 +1,9 @@
 <template>
   <div>
-    <TodoWrapper :title="'Todo'" :todoData="todoList" :state="'TODO'" @update="updateData"></TodoWrapper>
-    <TodoWrapper :title="'Doing'" :todoData="doingList" :state="'DOING'" @update="updateData"></TodoWrapper>
-    <TodoWrapper :title="'Done'" :todoData="doneList" :state="'DONE'" @update="updateData"></TodoWrapper>
+    <!-- <TodoWrapper v-for="wrapper in wrappers" :key="wrapper.listId" :listId="wrapper.listId" :listTitle="wrapper.listTitle" :todoData="data[wrapper.listId]" @update="updateData"></TodoWrapper> -->
+    <TodoWrapper :listId="'TODO'" :listTitle="'Todo'" :todoData="data['TODO']" @update="updateData"></TodoWrapper>
+    <TodoWrapper :listId="'DOING'" :listTitle="'Doing'" :todoData="data['DOING']" @update="updateData"></TodoWrapper>
+    <TodoWrapper :listId="'DONE'" :listTitle="'Done'" :todoData="data['DONE']" @update="updateData"></TodoWrapper>
   </div>
 </template>
 
@@ -16,32 +17,28 @@ export default {
   },
   data() {
     return {
-      todoList: [
-        { id: uniqid(), state: 'TODO', text: 'search npm', createdBy: 'hyoseung', createdDate: new Date() },
-        { id: uniqid(), state: 'TODO', text: 'searchnpm111qqqqqqqqqqqqq22', createdBy: 'hyoseung', createdDate: new Date() }
-      ],
-      doingList: [
-        { id: uniqid(), state: 'DOING', text: 'example coding', createdBy: 'hyoseung1', createdDate: new Date() }
-      ],
-      doneList: [
-        { id: uniqid(), state: 'DONE', text: 'create git repository', createdBy: 'hyoseung2', createdDate: new Date() }
-      ]
+      // wrappers: [
+      //   { listId: 'TODO', listTitle: 'Todo' },
+      //   { listId: 'DOING', listTitle: 'Doing' },
+      //   { listId: 'DONE', listTitle: 'Done' }
+      // ],
+      data: {
+        TODO: [
+          { id: uniqid(), title: 'test1', description: 'aaaa', createdBy: 'hyoseung', createdDate: new Date() },
+          { id: uniqid(), title: 'test222222222222222222222222222222222', description: 'bbbbb', createdBy: 'hyoseung', createdDate: new Date() }
+        ],
+        DOING: [
+          { id: uniqid(), title: 'test3', description: 'cccc', createdBy: 'hyoseung1', createdDate: new Date() }
+        ],
+        DONE: [
+          { id: uniqid(), title: 'test4', description: 'dddd', createdBy: 'hyoseung2', createdDate: new Date() }
+        ]
+      }
     }
   },
   methods: {
-    updateData(state, value) {
-      console.log('updateData ' + state);
-      switch (state) {
-        case 'TODO':
-          this.todoList = value;
-          break;
-        case 'DOING':
-          this.doingList = value;
-          break;
-        case 'DONE':
-          this.doneList = value;
-          break;
-      }
+    updateData(listId, data) {
+      this.data[listId] = data;
     }
   }
 }
