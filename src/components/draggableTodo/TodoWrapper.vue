@@ -7,43 +7,34 @@
       <div class="list-body">
         <draggable :group="{name: 'todo'}" v-model="list">
           <!-- <transition-group name="list-cards" tag="div"> -->
-            <TodoCard v-for="element in list" :key="element.id" :todoCard="element" @remove="removeCard" @show="showDetailCard"></TodoCard> <!-- emit 사용 -->
+            <TodoCard v-for="element in list" :key="element.id" :todoCard="element" @remove="removeCard" @show="showDetailCard"></TodoCard>
           <!-- </transition-group> -->
         </draggable>
+        <TodoAddCard v-if="showAddCard" @close="showAddCard = false" @add="addCard"></TodoAddCard>
       </div>
-      <div class="list-footer">
-        <span class="add-card-btn" @click="addCard">
+      <div class="list-footer" v-show="!showAddCard">
+        <span class="add-card-btn" @click="showAddCard = true">
           <i class="fas fa-plus" aria-hidden="true"></i> Add Card
         </span>
       </div>
     </div>
-
-    <Modal v-if="showModal" @close="showModal = false" :data="modalData">
-      <h3 slot="header">{{modalData.title}}</h3>
-      <div slot="body">
-        <div>{{modalData.createdBy}}</div>
-        <div>{{modalData.createdDate}}</div>
-        <div>{{modalData.description}}</div>
-      </div> 
-  </Modal>
   </div>
 </template>
 
 <script>
 import draggable from 'vuedraggable';
-import TodoCard from '@/components/draggableTodo/TodoCard.vue';
 import uniqid from 'uniqid';
-import Modal from '@/components/draggableTodo/Modal.vue';
+import TodoCard from '@/components/draggableTodo/TodoCard.vue';
+import TodoAddCard from '@/components/draggableTodo/TodoAddCard.vue';
 
 export default {
   props: ['listId', 'listTitle', 'todoData'],
   components: {
-    draggable, TodoCard, Modal
+    draggable, TodoCard, TodoAddCard
   },
   data() {
     return {
-      showModal: false,
-      modalData: {}
+      showAddCard: false
     }
   },
   computed: {
@@ -57,12 +48,12 @@ export default {
     }
   },
   methods: {
-    addCard() {
-      console.log('addCard : '+this.listId);
+    addCard(title, eventType) {
+      if(eventType === 'click') this.showAddCard = false;
       this.todoData.push({
         id: uniqid(),
-        title: 'add card',
-        description: 'testestest',
+        title: title,
+        description: '',
         createdBy: 'hyoseung',
         createdDate: new Date()
       });
@@ -73,8 +64,7 @@ export default {
       this.todoData.splice(index, 1);
     },
     showDetailCard(data) {
-      this.modalData = data;
-      this.showModal = true;
+      this.$emit('show', data);
     }
   }
 }
@@ -145,6 +135,5 @@ export default {
 .list-cards-enter, .list-cards-leave-to {
   opacity: 0;
   transform: translateY(30px);
-}
-*/
+} */
 </style>
