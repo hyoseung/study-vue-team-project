@@ -21,7 +21,7 @@ export default {
       if(this.target === 'title') e.preventDefault();
     },
     saveData() {
-      this.$emit('save', this.editData);
+      this.$emit('save', this.target, this.editData);
     }
   }
 }

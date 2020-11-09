@@ -43,12 +43,13 @@ export default {
         return this.todoData;
       },
       set(value) {
-        this.$emit('update', this.listId, value);
+        this.$emit('drag', this.listId, value);
       }
     }
   },
   methods: {
     addCard(title, eventType) {
+      console.log('addCard : '+this.listId);
       if(eventType === 'click') this.showAddCard = false;
       this.todoData.push({
         id: uniqid(),
@@ -64,7 +65,7 @@ export default {
       this.todoData.splice(index, 1);
     },
     showDetailCard(data) {
-      this.$emit('show', data);
+      this.$emit('show', this.listId, data);
     }
   }
 }

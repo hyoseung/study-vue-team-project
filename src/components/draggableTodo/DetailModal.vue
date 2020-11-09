@@ -54,8 +54,10 @@ export default {
     DetailEdit
   },
   methods: {
-    saveData(value) {
-      console.log(value);
+    saveData(target, value) {
+      this.data[target] = value;
+      if(target === 'title') this.editTitle = false;
+      else this.editDescription = false;
     },
     closeEdit(target) {
       switch (target) {
