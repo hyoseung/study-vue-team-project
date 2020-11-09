@@ -40,7 +40,8 @@ export default {
     menuList: [
       { title: 'HOME', to: {path: '/'}},
       { title: 'ABOUT', to: {path: '/about'}},
-      { title: 'Draggable Todo', to: {path: '/draggableTodo'}}
+      { title: 'Draggable Todo', to: {path: '/draggableTodo'}},
+      { title: 'DataTable', to: {path: '/dataTable'}}
     ]
   }),
 };

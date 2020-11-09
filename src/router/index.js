@@ -19,6 +19,11 @@ const routes = [
     path: '/draggableTodo',
     name: 'DraggableTodo',
     component: () => import('../views/DraggableTodo.vue')
+  },
+  {
+    path: '/dataTable',
+    name: 'DataTable',
+    component: () => import('../views/DataTable.vue')
   }
 ]
 
