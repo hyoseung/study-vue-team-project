@@ -44,10 +44,18 @@ export default {
   props: ['data'],
   data() {
     return {
-      title: this.data.title,
-      description: this.data.description,
+      //title: this.data.title,
+      //description: this.data.description,
       editTitle: false,
       editDescription: false
+    }
+  },
+  computed: {
+    title() {
+      return this.data.title;
+    },
+    description() {
+      return this.data.description;
     }
   },
   components: {

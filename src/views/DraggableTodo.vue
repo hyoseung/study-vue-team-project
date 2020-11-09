@@ -21,7 +21,6 @@ export default {
     return {
       showModal: false,
       modalData: {},
-      modalListId: '',
       data: {
         TODO: [
           { id: uniqid(), title: 'test1', description: 'test1 description', createdBy: 'hyoseung', createdDate: new Date() },
@@ -40,8 +39,7 @@ export default {
     dragData(listId, data) {
       this.data[listId] = data;
     },
-    showDetailModal(listId, data) {
-      this.modalListId = listId;
+    showDetailModal(data) {
       this.modalData = data;
       this.showModal = true;
     }
