@@ -1,4 +1,4 @@
-# team_project
+# study-vue-team-project
 
 ## setting project
 vue add vuetify
